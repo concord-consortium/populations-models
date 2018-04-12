@@ -4,9 +4,35 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
   BasicAnimal = require 'models/agents/basic-animal'
   Trait   = require 'models/trait'
 
+  biologicaSpecies = require 'species/rabbits-biologica'
+
+  class Rabbit extends BasicAnimal
+    label: 'Rabbit'
+    moving: false
+    moveCount: 0
+
+    makeNewborn: ->
+      super()
+
+      #so ugly
+      sex = if model.env.agents.length and
+        model.env.agents[model.env.agents.length-1].species.speciesName is "rabbits" and
+        model.env.agents[model.env.agents.length-1].get("sex") is "female" then "male" else "female"
+
+      @set 'sex', sex
+
+    resetGeneticTraits: ()->
+      super()
+      @set 'genome', @_genomeButtonsString()
+
+    _genomeButtonsString: ()->
+      alleles = @organism.getAlleleString().replace(/a:/g,'').replace(/b:/g,'').replace(/,/g, '')
+      return alleles
+
   module.exports = new Species
     speciesName: "rabbits"
-    agentClass: BasicAnimal
+    agentClass: Rabbit
+    geneticSpecies: biologicaSpecies
     defs:
       MAX_HEALTH: 1
       MATURITY_AGE: 9
@@ -14,11 +40,12 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
       INFO_VIEW_SCALE: 2.5
       INFO_VIEW_PROPERTIES:
         "Color: ": 'color'
+        "Genome: ": 'genome'
     traits: [
       new Trait {name: 'speed', default: 30 }
       new Trait {name: 'prey', default: [{name: 'fast plants'}] }
       new Trait {name: 'predator', default: [{name: 'hawks'},{name: 'foxes'}] }
-      new Trait {name: 'color', possibleValues: ['white','brown'] }
+      new Trait {name: 'color', possibleValues: [''], isGenetic: true, isNumeric: false }
       new Trait {name: 'vision distance', default: 200 }
       new Trait {name: 'eating distance', default:  50 }
       new Trait {name: 'mating distance', default:  50 }
