@@ -1,4 +1,4 @@
-require.register "species/rabbits-biologica", (exports, require, module) ->
+require.register "species/biologica/rabbits", (exports, require, module) ->
 
   module.exports =
 

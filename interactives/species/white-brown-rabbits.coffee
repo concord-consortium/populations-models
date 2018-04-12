@@ -4,7 +4,7 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
   BasicAnimal = require 'models/agents/basic-animal'
   Trait   = require 'models/trait'
 
-  biologicaSpecies = require 'species/rabbits-biologica'
+  biologicaSpecies = require 'species/biologica/rabbits'
 
   class Rabbit extends BasicAnimal
     label: 'Rabbit'
