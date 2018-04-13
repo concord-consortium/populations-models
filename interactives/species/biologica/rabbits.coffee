@@ -43,7 +43,7 @@ require.register "species/biologica/rabbits", (exports, require, module) ->
     geneList:
       'color':
         alleles: ['B', 'b']
-        weights: [0.8, 0.2]
+        weights: [.5, .5]
         start: 10000000
         length: 10584
 

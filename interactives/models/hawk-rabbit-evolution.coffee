@@ -134,18 +134,18 @@ window.model =
     switchButton = document.getElementById('switch-env')
     switchButton.onclick = =>
       if @brownness
-        @brownness = .2
+        @brownness = 0
         @env.setBackground("images/environments/snow.png")
       else
-        @brownness = .8
+        @brownness = 1
         @env.setBackground("images/environments/snow-9.png")
 
   setProperty: (agents, prop, val)->
     for a in agents
       a.set prop, val
 
-  addAgent: (species, properties=[])->
-    agent = species.createAgent()
+  addAgent: (species, properties=[], traits=[])->
+    agent = species.createAgent(traits)
     agent.setLocation @env.randomLocation()
     for prop in properties
       agent.set prop[0], prop[1]
@@ -171,11 +171,12 @@ window.model =
     if not @addedRabbits and @numRabbits > 0
       @addedRabbits = true
 
-    # if @addedRabbits and numPlants > 0 and @numRabbits < 9
-      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
-      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
-      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
-      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
+    if @addedRabbits and numPlants > 0 and @numRabbits < 9
+      colorTrait = new Trait {name: "color", default: @getRandomClone(allRabbits), isGenetic: true}
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
 
     if @numRabbits < 16
       @setProperty(allRabbits, "min offspring", 2)
@@ -190,10 +191,11 @@ window.model =
     if @numRabbits > 50
       @setProperty(allRabbits, "mating desire bonus", -40)
 
-  # Returns a random color from rabbits currently on screen
-  randomColor: (allRabbits) ->
+  # Returns a random allele string from rabbits currently on screen
+  getRandomClone: (allRabbits) ->
     randomRabbit = allRabbits[Math.floor(Math.random() * allRabbits.length)]
-    return randomRabbit.get("color")
+    console.log(randomRabbit.organism.alleles)
+    return randomRabbit.organism.alleles
 
   checkHawks: ->
     allHawks = @agentsOfSpecies(@hawkSpecies)
