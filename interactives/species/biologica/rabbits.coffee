@@ -1,5 +1,29 @@
 require.register "species/biologica/rabbits", (exports, require, module) ->
 
+  BioLogica.Genetics.prototype.getRandomAllele = (exampleOfGene) ->
+    for own gene of @species.geneList
+      _allelesOfGene = @species.geneList[gene].alleles
+      _weightsOfGene = @species.geneList[gene].weights || []
+      if exampleOfGene in _allelesOfGene
+        allelesOfGene = _allelesOfGene
+        break
+
+    if _weightsOfGene.length
+      _weightsOfGene[_weightsOfGene.length] = 0 while _weightsOfGene.length < allelesOfGene.length # Fill missing allele weights with 0
+    else
+      _weightsOfGene[_weightsOfGene.length] = 1 while _weightsOfGene.length < allelesOfGene.length # Equally weighted for all alleles
+
+    totWeights = _weightsOfGene.reduce ((prev, cur)-> prev + cur), 0
+    rand = Math.random() * totWeights
+    curMax = 0
+    for weight,i in _weightsOfGene
+      curMax += weight
+      if rand <= curMax
+        return allelesOfGene[i]
+
+    console.error('somehow did not pick one: ' + allelesOfGene[0]) if console.error?
+    return allelesOfGene[0]
+
   module.exports =
 
     name: 'Rabbit'

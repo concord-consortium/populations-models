@@ -117,26 +117,6 @@ window.model =
       brownRabbits++ if a.get('color') is 'brown'
     return [whiteRabbits, brownRabbits]
 
-  setupTimer: ->
-    backgroundChangeable = false
-    changeInterval = 10
-    Events.addEventListener Environment.EVENTS.STEP, =>
-      t = Math.floor(@env.date * Environment.DEFAULT_RUN_LOOP_DELAY / 1000) # this will calculate seconds at default speed
-      if t > 99
-        @env.stop()
-        @showMessage "All the snow is gone. Look at the graph.<br/>How many white and brown rabbits are left in the field?"
-        return
-
-      if t % changeInterval is 0 and backgroundChangeable and t/changeInterval <= 9
-        @brownness = 0.1 * t/changeInterval
-        @changeBackground(t/changeInterval)
-        backgroundChangeable = false
-      else if t % changeInterval isnt 0
-        backgroundChangeable = true
-
-    Events.addEventListener Environment.EVENTS.RESET, =>
-      @env.setBackground("images/environments/snow.png")
-
   changeBackground: (n)->
     return unless 0 < n < 10
     @env.setBackground("images/environments/snow-#{n}.png")
@@ -149,6 +129,16 @@ window.model =
       @checkPlants()
       @checkRabbits()
       @checkHawks()
+
+  setupControls: ->
+    switchButton = document.getElementById('switch-env')
+    switchButton.onclick = =>
+      if @brownness
+        @brownness = .2
+        @env.setBackground("images/environments/snow.png")
+      else
+        @brownness = .8
+        @env.setBackground("images/environments/snow-9.png")
 
   setProperty: (agents, prop, val)->
     for a in agents
@@ -181,13 +171,11 @@ window.model =
     if not @addedRabbits and @numRabbits > 0
       @addedRabbits = true
 
-    if @addedRabbits and numPlants > 0 and @numRabbits < 9
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]])
-      # faking here
-      color = if @brownness > 0.5 then "brown" else "white"
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", color]])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", color]])
+    # if @addedRabbits and numPlants > 0 and @numRabbits < 9
+      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
+      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
+      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
+      # @addAgent(@rabbitSpecies, [["resource consumption rate", 10],["color", "white"]])
 
     if @numRabbits < 16
       @setProperty(allRabbits, "min offspring", 2)
@@ -201,6 +189,11 @@ window.model =
 
     if @numRabbits > 50
       @setProperty(allRabbits, "mating desire bonus", -40)
+
+  # Returns a random color from rabbits currently on screen
+  randomColor: (allRabbits) ->
+    randomRabbit = allRabbits[Math.floor(Math.random() * allRabbits.length)]
+    return randomRabbit.get("color")
 
   checkHawks: ->
     allHawks = @agentsOfSpecies(@hawkSpecies)
@@ -265,6 +258,6 @@ window.model =
 window.onload = ->
   helpers.preload [model, env, plantSpecies, rabbitSpecies, hawkSpecies], ->
     model.run()
+    model.setupControls()
     model.setupGraph()
-    model.setupTimer()
     model.setupPopulationControls()
