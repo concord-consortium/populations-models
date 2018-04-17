@@ -73,8 +73,8 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
         rules: [
           {
             image:
-              path: "images/agents/rabbits/rabbit2.png"
-              scale: 0.2
+              path: "images/agents/rabbits/sandrat-light.png"
+              scale: 0.3
               anchor:
                 x: 0.8
                 y: 0.47
@@ -82,8 +82,8 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
           }
           {
             image:
-              path: "images/agents/rabbits/smallbunny.png"
-              scale: 0.2
+              path: "images/agents/rabbits/sandrat-dark.png"
+              scale: 0.3
               anchor:
                 x: 0.8
                 y: 0.47

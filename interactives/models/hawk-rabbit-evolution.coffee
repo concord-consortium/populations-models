@@ -31,7 +31,7 @@ window.model =
         }
         {
           species: rabbitSpecies
-          imagePath: "images/agents/rabbits/rabbit2.png"
+          imagePath: "images/agents/rabbits/sandrat-light.png"
           traits: [
             new Trait {name: "mating desire bonus", default: -20}
             new Trait {name: "hunger bonus", default: -10}
