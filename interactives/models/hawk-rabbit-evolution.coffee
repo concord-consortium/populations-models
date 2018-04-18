@@ -172,11 +172,10 @@ window.model =
       @addedRabbits = true
 
     if @addedRabbits and numPlants > 0 and @numRabbits < 9
-      colorTrait = new Trait {name: "color", default: @getRandomClone(allRabbits), isGenetic: true}
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [colorTrait])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
 
     if @numRabbits < 16
       @setProperty(allRabbits, "min offspring", 2)
@@ -191,11 +190,11 @@ window.model =
     if @numRabbits > 50
       @setProperty(allRabbits, "mating desire bonus", -40)
 
-  # Returns a random allele string from rabbits currently on screen
-  getRandomClone: (allRabbits) ->
+  # Returns a random color trait, selecting from rabbits currently on screen
+  getRandomColorTrait: (allRabbits) ->
     randomRabbit = allRabbits[Math.floor(Math.random() * allRabbits.length)]
-    console.log(randomRabbit.organism.alleles)
-    return randomRabbit.organism.alleles
+    alleleString = randomRabbit.organism.alleles
+    return new Trait {name: "color", default: alleleString, isGenetic: true}
 
   checkHawks: ->
     allHawks = @agentsOfSpecies(@hawkSpecies)
