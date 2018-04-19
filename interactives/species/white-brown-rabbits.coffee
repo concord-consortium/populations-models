@@ -10,6 +10,7 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
     label: 'Rabbit'
     moving: false
     moveCount: 0
+    _hasEatenOnce: 1
 
     makeNewborn: ->
       super()
@@ -57,15 +58,12 @@ require.register "species/white-brown-rabbits", (exports, require, module) ->
         "Genome: ": 'genome'
     traits: [
       new Trait {name: 'speed', default: 30 }
-      new Trait {name: 'prey', default: [{name: 'fast plants'}] }
       new Trait {name: 'predator', default: [{name: 'hawks'},{name: 'foxes'}] }
       new Trait {name: 'color', possibleValues: [''], isGenetic: true, isNumeric: false }
       new Trait {name: 'vision distance', default: 200 }
-      new Trait {name: 'eating distance', default:  50 }
       new Trait {name: 'mating distance', default:  50 }
       new Trait {name: 'max offspring',   default:  6 }
-      new Trait {name: 'resource consumption rate', default:  35 }
-      new Trait {name: 'metabolism', default:  0.5 }
+      new Trait {name: 'metabolism', default: 0 }
     ]
     imageRules: [
       {

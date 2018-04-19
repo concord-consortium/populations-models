@@ -23,20 +23,11 @@ window.model =
       speedSlider: true
       addOrganismButtons: [
         {
-          species: plantSpecies
-          imagePath: "images/agents/grass/tallgrass.png"
-          traits: [          ]
-          limit: 180
-          scatter: 45
-        }
-        {
           species: rabbitSpecies
           imagePath: "images/agents/rabbits/sandrat-light.png"
           traits: [
             new Trait {name: "mating desire bonus", default: -20}
-            new Trait {name: "hunger bonus", default: -10}
             new Trait {name: "age", default: 3}
-            new Trait {name: "resource consumption rate", default: 10}
           ]
           limit: 30
           scatter: 30
@@ -172,18 +163,16 @@ window.model =
       @addedRabbits = true
 
     if @addedRabbits and numPlants > 0 and @numRabbits < 9
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
-      @addAgent(@rabbitSpecies, [["resource consumption rate", 10]], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [], [@getRandomColorTrait(allRabbits)])
+      @addAgent(@rabbitSpecies, [], [@getRandomColorTrait(allRabbits)])
 
     if @numRabbits < 16
       @setProperty(allRabbits, "min offspring", 2)
       @setProperty(allRabbits, "speed", 70)
     else
-      # @setProperty(allRabbits, "metabolism", 1)
       @setProperty(allRabbits, "mating desire bonus", -20)
-      @setProperty(allRabbits, "hunger bonus", -10)
       @setProperty(allRabbits, "min offspring", 1)
       @setProperty(allRabbits, "speed", 50)
 
