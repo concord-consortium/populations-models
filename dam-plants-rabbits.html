@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>populations.js</title>
+        <link rel="stylesheet" href="css/vendor.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
+        <script src="js/vendor.js"></script>
+    <script type="text/javascript">
+      function sizeContentsToWindow() {
+        var modelWidth = $("#environment").width() + $("#meta").width();
+        var modelHeight = $("#wrapper").height();
+      
+      
+        if (modelWidth === 0 || modelHeight === 0 ||
+            document.getElementById("environment").getBoundingClientRect().width === 0) {
+          window.setTimeout(sizeContentsToWindow, 200);
+          return;
+        }
+      
+        var pageWidth = window.innerWidth;
+        var pageHeight = window.innerHeight;
+      
+        // var desiredWidth = Math.min(pageWidth, MAX_WIDTH);
+        // var desiredHeight = Math.min(pageHeight, MAX_HEIGHT);
+      
+        console.log(modelHeight, pageHeight, modelWidth, pageWidth)
+      
+        var smallestRatio = Math.min(pageWidth/modelWidth, pageHeight/modelHeight);
+        console.log(smallestRatio);
+      
+        var transformation = 'scale('+smallestRatio+')';
+      
+        // if (smallestRatio > 1 && !graphsOnly) {
+        //   var offset = Math.min(50, 300 * (smallestRatio - 1));
+        //   transformation += ' translate('+offset+'px, '+offset+'px)';
+        // }
+      
+        $("body").css({'transform': transformation, 'transform-origin': '0 0'});
+      }
+      
+      $().ready(sizeContentsToWindow);
+      $(window).resize(sizeContentsToWindow);
+      
+      
+      /*!
+      * screenfull
+      * v3.3.2 - 2017-10-27
+      * (c) Sindre Sorhus; MIT License
+      */
+      
+      !function(){"use strict";var a="undefined"!=typeof window&&void 0!==window.document?window.document:{},b="undefined"!=typeof module&&module.exports,c="undefined"!=typeof Element&&"ALLOW_KEYBOARD_INPUT"in Element,d=function(){for(var b,c=[["requestFullscreen","exitFullscreen","fullscreenElement","fullscreenEnabled","fullscreenchange","fullscreenerror"],["webkitRequestFullscreen","webkitExitFullscreen","webkitFullscreenElement","webkitFullscreenEnabled","webkitfullscreenchange","webkitfullscreenerror"],["webkitRequestFullScreen","webkitCancelFullScreen","webkitCurrentFullScreenElement","webkitCancelFullScreen","webkitfullscreenchange","webkitfullscreenerror"],["mozRequestFullScreen","mozCancelFullScreen","mozFullScreenElement","mozFullScreenEnabled","mozfullscreenchange","mozfullscreenerror"],["msRequestFullscreen","msExitFullscreen","msFullscreenElement","msFullscreenEnabled","MSFullscreenChange","MSFullscreenError"]],d=0,e=c.length,f={};d<e;d++)if((b=c[d])&&b[1]in a){for(d=0;d<b.length;d++)f[c[0][d]]=b[d];return f}return!1}(),e={change:d.fullscreenchange,error:d.fullscreenerror},f={request:function(b){var e=d.requestFullscreen;b=b||a.documentElement,/ Version\/5\.1(?:\.\d+)? Safari\//.test(navigator.userAgent)?b[e]():b[e](c&&Element.ALLOW_KEYBOARD_INPUT)},exit:function(){a[d.exitFullscreen]()},toggle:function(a){this.isFullscreen?this.exit():this.request(a)},onchange:function(a){this.on("change",a)},onerror:function(a){this.on("error",a)},on:function(b,c){var d=e[b];d&&a.addEventListener(d,c,!1)},off:function(b,c){var d=e[b];d&&a.removeEventListener(d,c,!1)},raw:d};if(!d)return void(b?module.exports=!1:window.screenfull=!1);Object.defineProperties(f,{isFullscreen:{get:function(){return Boolean(a[d.fullscreenElement])}},element:{enumerable:!0,get:function(){return a[d.fullscreenElement]}},enabled:{enumerable:!0,get:function(){return Boolean(a[d.fullscreenEnabled])}}}),b?module.exports=f:window.screenfull=f}();
+      
+      if (screenfull.enabled) {
+        screenfull.on('change', function () {
+          if (screenfull.isFullscreen) {
+            $('#fullscreen-button').addClass("exit");
+          } else {
+            $('#fullscreen-button').removeClass("exit");
+          }
+        });
+      }
+      
+      
+      $().ready(function() {
+        $('#fullscreen-button .image').on('click', function() {
+          if (screenfull.enabled) {
+            screenfull.toggle();
+          }
+        });
+      });
+    </script>
+    <!-- model files here-->
+        <script src="species/fast-plants-roots.js"></script>
+        <script src="species/varied-rabbits.js"></script>
+        <script src="environments/dam.js"></script>
+        <script src="models/dam-plants-rabbits.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0;
+      }
+      
+      #wrapper {
+        display: flex;
+      }
+      
+      #meta {
+        padding: 2px;
+        display: flex;
+      }
+      
+      #meta .left {
+        width: 150px;
+      }
+      
+      #meta .right {
+        margin-left: 4px;
+      }
+      
+      #environment {
+        padding: 0;
+        overflow: unset;
+      }
+      
+      #environment>div {
+        width: 600px;
+      }
+      
+      .title {
+        font-weight: bold;
+        padding-right: 5px;
+      }
+      
+      
+      #controls, #water-level-container, #highlight {
+        margin-top: 35px;
+      }
+      
+      #water-level {
+        height: 100px;
+        width: 18px;
+        border-radius: 10px;
+        background-color: #cccccc;
+        position: relative;
+        padding: 2px;
+      }
+      
+      #water-level-indicator {
+        position: absolute;
+        bottom: 0;
+        left: 3px;
+        height: 100%;
+        max-height: 100px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        width: 16px;
+        border-radius: 8px;
+        background-color: blue;
+      }
+      
+      #fullscreen-button {
+        position: relative;
+        top: 437px;
+        left: -552px;
+        width: 58px;
+        height: 58px;
+        background-image: -webkit-linear-gradient(top, #fff 0%, #ccc 100%);
+        cursor: pointer;
+        border-radius: 5px;
+        box-shadow: 0 0 2px #D09845;
+      }
+      
+      #fullscreen-button:hover {
+        box-shadow: 0 0 5px #444;
+      }
+      
+      #fullscreen-button:active {
+        box-shadow: 0 0 5px #fff;
+        background-image: -webkit-linear-gradient(top, #fff 0%, #bbb 100%);
+      }
+      
+      #fullscreen-button .image {
+        background: no-repeat url(images/ui/fullscreen.svg) center/80%;
+        width: 100%;
+        height: 100%;
+      }
+      
+      #fullscreen-button.exit .image {
+        background: no-repeat url(images/ui/fullscreen-exit.svg) center/100%;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="environment"></div>
+      <div id="meta">
+        <div class="left">
+          <div class="year-container"><span class="title">Year:</span><span id="year">1</span></div>
+          <div id="controls">
+            <button id="build-button">Build Dam</button>
+          </div>
+          <div id="water-level-container">
+            <div class="title">Water below the dam</div>
+            <div class="level">
+              <div>Lots of water</div>
+              <div id="water-level">
+                <div id="water-level-indicator"></div>
+              </div>
+              <div>Little water</div>
+            </div>
+          </div>
+          <div id="highlight"><span class="title">Highlight:</span><br>
+            <input id="highlight-none" type="radio" name="highlight" checked="checked">None<br>
+            <input id="highlight-big" type="radio" name="highlight">Big rabbits<br>
+            <input id="highlight-medium" type="radio" name="highlight">Medium rabbits<br>
+            <input id="highlight-small" type="radio" name="highlight">Small rabbits
+          </div>
+        </div>
+        <div class="right">
+          <div id="chart1">Chart 1 here</div>
+          <div id="chart2">Chart 2 here</div>
+        </div>
+      </div>
+      <div id="fullscreen-button">
+        <div class="image"></div>
+      </div>
+    </div>
+  </body>
+</html>
