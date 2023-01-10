@@ -19,7 +19,7 @@
     "coffee-script-brunch": "~1.7.2"
   },
   "devDependencies": {
-    "brunch": "2.10.10",
+    "brunch": "2.10.17",
     "after-brunch": "*",
     "stylus-brunch": "*"
   }
